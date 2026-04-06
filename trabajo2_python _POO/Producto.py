@@ -10,14 +10,27 @@ class Producto:
                 cantidad (int): Cantidad disponible. Debe ser mayor o igual a 0.
 
             Raises:
+                TypeError: Si los tipos de datos no son correctos.
                 ValueError: Si el nombre está vacío, el precio es negativo o la cantidad es negativa.
         """
-        if not nombre.strip():
+        if not isinstance(nombre, str):
+            raise TypeError("El nombre debe ser una cadena de texto.")
+
+        if not isinstance(precio, (int, float)):
+            raise TypeError("El precio debe ser un número.")
+
+        if not isinstance(cantidad, int):
+            raise TypeError("La cantidad debe ser un número entero.")
+
+        if not isinstance(nombre, str) or nombre.strip() == "":
             raise ValueError('El nombre no puedo ser vacio.')
+        if nombre.strip().isdigit():
+            raise ValueError("El nombre no puede ser solo números.")
         if precio < 0:
             raise ValueError('El precio no puede ser negativo.')
-        if cantidad <= 0:
-            raise ValueError('El cantidad no puede ser menor que 1.')
+        if cantidad < 0:
+            raise ValueError('La cantidad no puede ser menor que 0.')
+
         self.nombre = nombre.strip()
         self.precio = float(precio)
         self.cantidad = int(cantidad)

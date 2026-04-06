@@ -4,7 +4,7 @@ class Inventario:
 
     def __init__(self):
         """
-             Inicializa un inventario vacío para almacenar productos.
+        Inicializa un inventario vacío para almacenar productos.
         """
         self.productos = []
 
@@ -12,8 +12,12 @@ class Inventario:
         """
             Agrega un producto al inventario.
             Args:
-            producto (Producto): Objeto Producto a agregar.
+                producto (Producto): Objeto Producto a agregar.
+            Raises:
+                TypeError: si 'producto' no es instancia de Producto.
         """
+        if not isinstance(producto, Producto):
+            raise TypeError("Solo se pueden agregar objetos de tipo Producto.")
         self.productos.append(producto)
 
     def buscar_producto(self, nombre: str):
@@ -45,7 +49,11 @@ class Inventario:
         """
         if not self.productos:
             print("\nNo hay productos en el inventario.")
-            return
+            return []
+        resultado = []
         print("\n------ LISTA DE PRODUCTOS ------")
         for prod in self.productos:
-            print(prod)
+            texto = str(prod)
+            print(texto)
+            resultado.append(texto)
+        return resultado
