@@ -150,7 +150,7 @@ def determinar_estado(calificaciones, umbral=5.0):
     return aprobadas, reprobadas
 
 
-def encontrar_extremos(calificaiones):
+def encontrar_extremos(calificaciones):
     """
     Encuentra los índices de la calificación más alta y más baja.
 
@@ -164,11 +164,11 @@ def encontrar_extremos(calificaiones):
 
         Si la lista está vacía, retorna (None, None).
     """
-    if len(calificaiones) == 0:
+    if len(calificaciones) == 0:
         return None, None
 
-    indice_max = calificaiones.index(max(calificaiones))
-    indice_min = calificaiones.index(min(calificaiones))
+    indice_max = calificaciones.index(max(calificaciones))
+    indice_min = calificaciones.index(min(calificaciones))
 
     return indice_max, indice_min
 
