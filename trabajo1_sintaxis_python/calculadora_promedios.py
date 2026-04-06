@@ -5,6 +5,13 @@
 
 
 def main():
+    """
+    Función principal del programa.
+
+    Controla el flujo general: solicita datos al usuario, calcula el promedio,
+    determina materias aprobadas/reprobadas, encuentra las notas extremas y
+    muestra un resumen completo por consola.
+    """
     print("---------------------------------------------")
     print("CALCULADORA DE PROMEDIOS ESCOLARES CON PYTHON")
     print("---------------------------------------------")
@@ -16,8 +23,13 @@ def main():
         return
 
     promedio = calcular_promedio(calificaciones)
-    aprobadas, reprobadas = determinar_notas(calificaciones)
-    idx_max, idx_min = encontrar_nota_max_y_min(calificaciones)
+
+    if promedio is None:
+        print("\nNo fue posible calcular el promedio (no hay datos).")
+        return
+
+    aprobadas, reprobadas = determinar_estado(calificaciones)
+    idx_max, idx_min = encontrar_extremos(calificaciones)
 
     print("\n=========== RESUMEN DE NOTAS ===========\n")
 
@@ -47,8 +59,18 @@ def main():
     print("\nCalificación más baja:")
     print(f" {materias[idx_min]} ({calificaciones[idx_min]})")
 
+    print("\n¡Gracias por usar la calculadora!")
+
 
 def ingresar_calificaciones():
+    """
+    Solicita al usuario ingresar materias y sus calificaciones.
+
+    Retorna:
+        tuple: (materias, calificaciones)
+            - materias (list[str]): nombres de las materias ingresadas
+            - calificaciones (list[float]): notas respectivas (0 a 10)
+    """
     materias = []
     calificaciones = []
 
@@ -77,26 +99,49 @@ def ingresar_calificaciones():
         calificaciones.append(nota)
 
         # Preguntar para continuar
-        continuar = input("¿Desea ingresar otra materia? (s/n): ").lower()
-        if continuar != "s":
+        while True:
+            continuar = input("¿Desea ingresar otra materia? (s/n): ").lower()
+            if continuar in ("s","n"):
+                break
+            print("Respuesta incorrecta. Por favor ingrese 's' or 'n'.\n")
+        if continuar == "n":
             break
 
     return materias, calificaciones
 
 
 def calcular_promedio(calificaciones):
+    """
+    Calcula el promedio aritmético de una lista de calificaciones.
+
+    Parámetros:
+        calificaciones (list[float]): lista de notas.
+
+    Retorna:
+        float: promedio calculado. Si la lista está vacía, retorna 0.
+    """
     if len(calificaciones) == 0:
         return 0
     return sum(calificaciones) / len(calificaciones)
 
 
-def determinar_notas(calificaciones, umbral=5.0):
+def determinar_estado(calificaciones, umbral=5.0):
+    """
+    Determina qué materias están aprobadas y cuáles reprobadas según un umbral.
+
+    Parámetros:
+        calificaciones (list[float]): lista de notas.
+        umbral (float): nota mínima para aprobar (por defecto 5.0).
+
+    Retorna:
+        tuple: (aprobadas, reprobadas)
+            - aprobadas (list[int]): índices de notas >= umbral
+            - reprobadas (list[int]): índices de notas < umbral
+    """
     aprobadas = []
     reprobadas = []
 
-    for valor in range(len(calificaciones)):
-        nota = calificaciones[valor]
-
+    for valor, nota in enumerate(calificaciones):
         if nota >= umbral:
             aprobadas.append(valor)
         else:
@@ -105,12 +150,25 @@ def determinar_notas(calificaciones, umbral=5.0):
     return aprobadas, reprobadas
 
 
-def encontrar_nota_max_y_min(calificaciones):
-    if len(calificaciones) == 0:
+def encontrar_extremos(calificaiones):
+    """
+    Encuentra los índices de la calificación más alta y más baja.
+
+    Parámetros:
+        calificaiones (list[float]): lista de notas.
+
+    Retorna:
+        tuple: (indice_max, indice_min)
+            - indice_max (int): índice de la nota mayor
+            - indice_min (int): índice de la nota menor
+
+        Si la lista está vacía, retorna (None, None).
+    """
+    if len(calificaiones) == 0:
         return None, None
 
-    indice_max = calificaciones.index(max(calificaciones))
-    indice_min = calificaciones.index(min(calificaciones))
+    indice_max = calificaiones.index(max(calificaiones))
+    indice_min = calificaiones.index(min(calificaiones))
 
     return indice_max, indice_min
 
